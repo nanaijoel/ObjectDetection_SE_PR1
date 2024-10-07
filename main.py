@@ -1,34 +1,22 @@
-import cv2
-#  import numpy as np
+import argparse
+from config_manager import load_config
+from modes import run_camera_mode, run_image_mode
 
+def main():
+    # Load the configuration file
+    config = load_config()
 
-def start_webcam():
-    # Webcam starten (0 steht für die Standardkamera)
-    cap = cv2.VideoCapture(0)
+    # Set up argument parser for mode selection
+    parser = argparse.ArgumentParser(description="Shape and Color Detection")
+    parser.add_argument('--mode', required=True, choices=['CAMERA', 'IMAGE'],
+                        help="Choose the mode of operation: CAMERA or IMAGE")
+    args = parser.parse_args()
 
-    if not cap.isOpened():
-        print("Fehler: Kamera konnte nicht geöffnet werden")
-        return
-
-    while True:
-        # Frame von der Kamera lesen
-        ret, frame = cap.read()
-
-        if not ret:
-            print("Fehler: Frame konnte nicht gelesen werden")
-            break
-
-        # Frame im Fenster anzeigen
-        cv2.imshow('Webcam', frame)
-
-        # Mit 'q' das Programm beenden
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Kamera freigeben und Fenster schließen
-    cap.release()
-    cv2.destroyAllWindows()
-
+    # Call the appropriate function based on the selected mode
+    if args.mode == 'CAMERA':
+        run_camera_mode(config)
+    elif args.mode == 'IMAGE':
+        run_image_mode(config)
 
 if __name__ == "__main__":
-    start_webcam()
+    main()
