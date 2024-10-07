@@ -1,6 +1,6 @@
 import configparser
 
-CONFIG_FILE = 'config.ini'
+CONFIG_FILE = 'src/config.ini'
 
 def load_config():
     config = configparser.ConfigParser()

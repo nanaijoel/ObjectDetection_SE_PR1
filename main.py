@@ -1,6 +1,6 @@
 import argparse
-from config_manager import load_config
-from modes import run_camera_mode, run_image_mode
+from src.config_manager import load_config
+from src.modes import run_camera_mode, run_image_mode
 
 def main():
     # Load the configuration file

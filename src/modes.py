@@ -1,8 +1,8 @@
 import cv2
 import os
-from ShapeAndColorDetection import process_frame  # Import the existing shape and color detection logic
-from logger import DataLogger
-from visualize_shapes import visualize_shapes
+from src.ShapeAndColorDetection import process_frame  # Import the existing shape and color detection logic
+from src.logger import DataLogger
+from src.visualize_shapes import visualize_shapes
 
 
 # Function to run the camera mode
