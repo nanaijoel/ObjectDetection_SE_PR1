@@ -8,13 +8,13 @@ env/
 *.pyc
 __pycache__/
 
-# Log files
-*.log
-logs/data_log.csv  # Ignore only data_log.csv in the logs folder
+# Ignore only data_log.csv in the logs folder
+logs/data_log.csv
 
-# Allow ReadMe_Logger.md
+# Allow tracking of other files in the logs folder
+!logs/
+!logs/.gitkeep
 !logs/ReadMe_Logger.md
-
 
 # IDE specific
 .idea/
