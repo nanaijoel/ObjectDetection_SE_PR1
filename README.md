@@ -17,7 +17,6 @@
     - Use the provided requirements.txt file to set up the recommended virtual environment with the correct module versions.
     - Install the dependencies by running: pip install -r requirements.txt
     - Otherwise, just check the version of the specific modules which we use
-
     2. Run the application:
 
     - Navigate to the project folder and run: python main.py --mode <mode_name>
