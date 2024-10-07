@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from datetime import datetime
 
 # Function to dynamically load color ranges from the configuration file
 def load_color_ranges(config):
