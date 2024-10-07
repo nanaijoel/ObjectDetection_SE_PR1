@@ -1,19 +1,20 @@
 import cv2
 
+# Define the color map globally to avoid re-creating it each time the function is called
+color_map = {
+    'red': (0, 0, 255),
+    'green': (0, 255, 0),
+    'blue': (255, 0, 0),
+    'yellow': (0, 255, 255),
+    'violet': (255, 0, 255),
+}
+
 
 def visualize_shapes(frame, shapes):
     for contour, shape, color_name in shapes:  # Loop through each detected shape
         contour_color = (0, 0, 0)  # Black color for contour
 
-        # Define color for filling the shape based on the detected color name
-        color_map = {
-            'red': (0, 0, 255),
-            'green': (0, 255, 0),
-            'blue': (255, 0, 0),
-            'yellow': (0, 255, 255),
-            'violet': (255, 0, 255),
-        }
-
+        # Use the globally defined color_map to fill the shape with the detected color
         fill_color = color_map.get(color_name, (255, 255, 255))  # Default to white if color not recognized
 
         # Fill the inside of the shape with the detected color
