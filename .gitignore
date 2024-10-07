@@ -1,0 +1,22 @@
+# created by virtualenv automatically
+*
+# Virtual environments
+venv/
+env/
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Log files
+*.log
+logs/
+data_log.csv  # Wenn die Logdatei nicht versioniert werden soll
+
+# IDE specific
+.idea/
+.vscode/
+
+# OS specific
+.DS_Store
+Thumbs.db
