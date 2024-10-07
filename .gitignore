@@ -10,8 +10,11 @@ __pycache__/
 
 # Log files
 *.log
-logs/
-data_log.csv  # Wenn die Logdatei nicht versioniert werden soll
+logs/data_log.csv  # Ignore only data_log.csv in the logs folder
+
+# Allow ReadMe_Logger.md
+!logs/ReadMe_Logger.md
+
 
 # IDE specific
 .idea/
