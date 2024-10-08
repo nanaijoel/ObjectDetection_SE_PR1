@@ -1,30 +1,26 @@
 import csv
 import datetime
-import time
 
 
 class DataLogger:
-    def __init__(self, filename, log_interval=1):
+    def __init__(self, filename, log_interval=1.0):
         self.filename = filename
         self.log_interval = log_interval
-        self.last_logged = {}
+        self.last_log_time = None
         self._initialize_csv()
 
     def _initialize_csv(self):
         try:
             with open(self.filename, mode='x', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(['Timestamp', 'Pattern Type', 'Detected Color', 'Additional Info'])
+                writer.writerow(['Timestamp', 'Shape', 'Color'])
         except FileExistsError:
             pass
 
-    def log_data(self, pattern_type, detected_color, additional_info=''):
-        current_time = time.time()
-        key = (pattern_type, detected_color)
-
-        if key not in self.last_logged or (current_time - self.last_logged[key]) > self.log_interval:
-            timestamp = datetime.datetime.now().isoformat()
+    def log_data(self, shape, color):
+        current_time = datetime.datetime.now()
+        if self.last_log_time is None or (current_time - self.last_log_time).total_seconds() >= self.log_interval:
             with open(self.filename, mode='a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([timestamp, pattern_type, detected_color, additional_info])
-            self.last_logged[key] = current_time
+                writer.writerow([current_time.isoformat(), shape, color])
+            self.last_log_time = current_time

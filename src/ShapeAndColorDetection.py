@@ -2,40 +2,7 @@ import cv2
 import numpy as np
 
 
-def load_color_ranges(config, mode):
-    if mode == 'CAMERA':
-        color_config = 'COLOR_RANGES_CAMERA'
-    else:
-        color_config = 'COLOR_RANGES_IMAGE'
-
-    return {
-        'red': (tuple(map(int, config[color_config]['red_lower'].split(','))),
-                tuple(map(int, config[color_config]['red_upper'].split(',')))),
-        'green': (tuple(map(int, config[color_config]['green_lower'].split(','))),
-                  tuple(map(int, config[color_config]['green_upper'].split(',')))),
-        'blue': (tuple(map(int, config[color_config]['blue_lower'].split(','))),
-                 tuple(map(int, config[color_config]['blue_upper'].split(',')))),
-        'yellow': (tuple(map(int, config[color_config]['yellow_lower'].split(','))),
-                   tuple(map(int, config[color_config]['yellow_upper'].split(',')))),
-        'violet': (tuple(map(int, config[color_config]['violet_lower'].split(','))),
-                   tuple(map(int, config[color_config]['violet_upper'].split(','))))
-    }
-
-
-# Function to detect color inside a given contour
-def detect_color(hsv, contour, color_ranges):
-    mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
-    cv2.drawContours(mask, [contour], -1, 255, -1)
-    mean_hsv = cv2.mean(hsv, mask=mask)[:3]
-
-    for color, (lower, upper) in color_ranges.items():
-        lower = np.array(lower)
-        upper = np.array(upper)
-        if cv2.inRange(np.array([[mean_hsv]], dtype=np.uint8), lower, upper).any():
-            return color
-    return "undefined"
-
-# Function to detect shape based on the contour
+# Function to detect shape based on contour
 def detect_shape(contour):
     peri = cv2.arcLength(contour, True)
     approx = cv2.approxPolyDP(contour, 0.04 * peri, True)
@@ -58,35 +25,34 @@ def detect_shape(contour):
         return "Circle"
 
 
+# Function to detect color inside a given contour
+def detect_color(hsv, contour, color_ranges):
+    mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
+    cv2.drawContours(mask, [contour], -1, 255, -1)
+    mean_hsv = cv2.mean(hsv, mask=mask)[:3]
+
+    for color, (lower, upper) in color_ranges.items():
+        lower = np.array(lower)
+        upper = np.array(upper)
+        if cv2.inRange(np.array([[mean_hsv]], dtype=np.uint8), lower, upper).any():
+            return color
+    return "undefined"
+
+
 # Function to process frames and detect shapes and colors
-def process_frame(frame, config, mode='IMAGE'):
-
-    color_ranges = load_color_ranges(config, mode)
-
-    min_contour_area = int(config['SHAPE_DETECTION']['min_contour_area'])
-    canny_threshold1 = int(config['SHAPE_DETECTION']['canny_threshold1'])
-    canny_threshold2 = int(config['SHAPE_DETECTION']['canny_threshold2'])
-    blur_kernel_size = int(config['SHAPE_DETECTION']['blur_kernel_size'])
-
+def process_frame(frame, shape_params, color_ranges):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (blur_kernel_size, blur_kernel_size), 0)
-
-    edges = cv2.Canny(blurred, canny_threshold1, canny_threshold2)
+    blurred = cv2.GaussianBlur(gray, (shape_params['blur_kernel_size'], shape_params['blur_kernel_size']), 0)
+    edges = cv2.Canny(blurred, shape_params['canny_threshold1'], shape_params['canny_threshold2'])
 
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     shapes = []
     for contour in contours:
-        if cv2.contourArea(contour) > min_contour_area:
+        if cv2.contourArea(contour) > shape_params['min_contour_area']:
             shape = detect_shape(contour)
             color = detect_color(hsv, contour, color_ranges)
-            M = cv2.moments(contour)
-            if M["m00"] > 0:
-                cX = int(M["m10"] / M["m00"])
-                cY = int(M["m01"] / M["m00"])
-                shapes.append((contour, shape, color))
+            shapes.append((contour, shape, color))
 
     return shapes
-

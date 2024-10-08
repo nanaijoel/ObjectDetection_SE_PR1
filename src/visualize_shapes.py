@@ -1,6 +1,5 @@
 import cv2
 
-
 color_map = {
     'red': (0, 0, 255),
     'green': (0, 255, 0),
@@ -33,4 +32,3 @@ def visualize_shapes(frame, shapes, logger=None):
                 logger.log_data(shape, color_name)
 
     return frame
-
