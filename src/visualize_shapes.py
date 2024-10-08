@@ -14,15 +14,13 @@ text_color = color_map['black']
 
 
 def visualize_shapes(frame, shapes):
-    for contour, shape, color_name in shapes:  # Loop through each detected shape
-        contour_color = (255, 20, 147)  # Pink color for contour
+    for contour, shape, color_name in shapes:
+        contour_color = (255, 20, 147)  # Violet color for contour
 
         fill_color = color_map.get(color_name, (255, 255, 255))  # Default to white if color not recognized
 
-        # Fill the inside of the shape with the detected color
         cv2.drawContours(frame, [contour], -1, fill_color, thickness=cv2.FILLED)
 
-        # Draw the contour in pink
         cv2.drawContours(frame, [contour], -1, contour_color, 2)
 
         # Calculate the centroid (center point) of the contour

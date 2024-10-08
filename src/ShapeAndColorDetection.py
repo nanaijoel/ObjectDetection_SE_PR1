@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-# Function to dynamically load color ranges from the configuration file
 def load_color_ranges(config):
     return {
         'red': (tuple(map(int, config['COLOR_RANGES']['red_lower'].split(','))),
