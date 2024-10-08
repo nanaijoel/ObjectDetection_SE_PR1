@@ -1,19 +1,26 @@
 import cv2
 import numpy as np
 
-def load_color_ranges(config):
+
+def load_color_ranges(config, mode):
+    if mode == 'CAMERA':
+        color_config = 'COLOR_RANGES_CAMERA'
+    else:
+        color_config = 'COLOR_RANGES_IMAGE'
+
     return {
-        'red': (tuple(map(int, config['COLOR_RANGES']['red_lower'].split(','))),
-                tuple(map(int, config['COLOR_RANGES']['red_upper'].split(',')))),
-        'green': (tuple(map(int, config['COLOR_RANGES']['green_lower'].split(','))),
-                  tuple(map(int, config['COLOR_RANGES']['green_upper'].split(',')))),
-        'blue': (tuple(map(int, config['COLOR_RANGES']['blue_lower'].split(','))),
-                 tuple(map(int, config['COLOR_RANGES']['blue_upper'].split(',')))),
-        'yellow': (tuple(map(int, config['COLOR_RANGES']['yellow_lower'].split(','))),
-                   tuple(map(int, config['COLOR_RANGES']['yellow_upper'].split(',')))),
-        'violet': (tuple(map(int, config['COLOR_RANGES']['violet_lower'].split(','))),
-                   tuple(map(int, config['COLOR_RANGES']['violet_upper'].split(','))))
+        'red': (tuple(map(int, config[color_config]['red_lower'].split(','))),
+                tuple(map(int, config[color_config]['red_upper'].split(',')))),
+        'green': (tuple(map(int, config[color_config]['green_lower'].split(','))),
+                  tuple(map(int, config[color_config]['green_upper'].split(',')))),
+        'blue': (tuple(map(int, config[color_config]['blue_lower'].split(','))),
+                 tuple(map(int, config[color_config]['blue_upper'].split(',')))),
+        'yellow': (tuple(map(int, config[color_config]['yellow_lower'].split(','))),
+                   tuple(map(int, config[color_config]['yellow_upper'].split(',')))),
+        'violet': (tuple(map(int, config[color_config]['violet_lower'].split(','))),
+                   tuple(map(int, config[color_config]['violet_upper'].split(','))))
     }
+
 
 # Function to detect color inside a given contour
 def detect_color(hsv, contour, color_ranges):
@@ -48,9 +55,11 @@ def detect_shape(contour):
     else:
         return "Circle"
 
+
 # Function to process frames and detect shapes and colors
-def process_frame(frame, logger, config):
-    color_ranges = load_color_ranges(config)
+def process_frame(frame, config, mode='IMAGE'):
+
+    color_ranges = load_color_ranges(config, mode)
 
     min_contour_area = int(config['SHAPE_DETECTION']['min_contour_area'])
     canny_threshold1 = int(config['SHAPE_DETECTION']['canny_threshold1'])
@@ -76,6 +85,6 @@ def process_frame(frame, logger, config):
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
                 shapes.append((contour, shape, color))
-                logger.log_data(shape, color)
 
     return shapes
+

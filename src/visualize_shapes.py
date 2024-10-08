@@ -13,23 +13,24 @@ color_map = {
 text_color = color_map['black']
 
 
-def visualize_shapes(frame, shapes):
+def visualize_shapes(frame, shapes, logger=None):
     for contour, shape, color_name in shapes:
         contour_color = (255, 20, 147)  # Violet color for contour
 
         fill_color = color_map.get(color_name, (255, 255, 255))  # Default to white if color not recognized
 
         cv2.drawContours(frame, [contour], -1, fill_color, thickness=cv2.FILLED)
-
         cv2.drawContours(frame, [contour], -1, contour_color, 2)
 
-        # Calculate the centroid (center point) of the contour
         M = cv2.moments(contour)
         if M["m00"] != 0:
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
 
-            # Write the detected shape (e.g., "Square", "Circle") on the shape
             cv2.putText(frame, shape, (cX - 20, cY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, text_color, 2)
 
+            if logger:
+                logger.log_data(shape, color_name)
+
     return frame
+

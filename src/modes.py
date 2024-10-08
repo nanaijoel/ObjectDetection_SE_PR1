@@ -6,22 +6,26 @@ from src.visualize_shapes import visualize_shapes
 
 
 def run_camera_mode(config):
-    camera_index = int(config['CAMERA']['camera_index']); window_size = config['CAMERA']['window_size'].split('x')
-    fps = int(config['CAMERA']['fps']); log_file = os.path.join(config['DEFAULT']['log_folder'], 'data_log.csv')
+    camera_index = int(config['CAMERA']['camera_index'])
+    window_size = config['CAMERA']['window_size'].split('x')
+    fps = int(config['CAMERA']['fps'])
+    log_interval = float(config['DEFAULT']['log_interval'])
+    log_file = os.path.join(config['DEFAULT']['log_folder'], 'data_log.csv')
 
-    logger = DataLogger(log_file)
+    logger = DataLogger(log_file, log_interval=log_interval)
 
-    cap = cv2.VideoCapture(camera_index); cap.set(cv2.CAP_PROP_FPS, fps)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(window_size[0])); cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(window_size[1]))
+    cap = cv2.VideoCapture(camera_index)
+    cap.set(cv2.CAP_PROP_FPS, fps)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(window_size[0]))
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(window_size[1]))
 
     while True:
         ret, frame = cap.read()
         if not ret:
             break
 
-        shapes = process_frame(frame, logger, config)
-
-        frame_with_shapes = visualize_shapes(frame, shapes)
+        shapes = process_frame(frame, config, mode='CAMERA')
+        frame_with_shapes = visualize_shapes(frame, shapes, logger)
 
         cv2.imshow("Camera Feed", frame_with_shapes)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -37,7 +41,6 @@ def run_image_mode(config):
 
     logger = DataLogger(log_file)
 
-    # Loop through all image files in the image directory
     for filename in os.listdir(image_directory):
         if filename.endswith(('.png', '.jpg', '.jpeg')):
             image_path = os.path.join(image_directory, filename)
@@ -47,9 +50,8 @@ def run_image_mode(config):
                 print(f"Error loading image: {filename}")
                 continue
 
-            shapes = process_frame(image, logger, config)
-
-            image_with_shapes = visualize_shapes(image, shapes)
+            shapes = process_frame(image, config, mode='IMAGE')
+            image_with_shapes = visualize_shapes(image, shapes, logger)
             cv2.imshow(f"Image: {filename}", image_with_shapes)
             cv2.waitKey(0)
 
