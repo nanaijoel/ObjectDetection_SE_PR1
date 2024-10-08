@@ -52,6 +52,8 @@ def detect_shape(contour):
             return "Rectangle"
     elif vertices == 5:
         return "Pentagon"
+    elif vertices == 6:
+        return "Hexagon"
     else:
         return "Circle"
 

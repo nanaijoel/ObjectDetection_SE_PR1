@@ -4,7 +4,7 @@ import time
 
 
 class DataLogger:
-    def __init__(self, filename, log_interval=0.5):
+    def __init__(self, filename, log_interval=1):
         self.filename = filename
         self.log_interval = log_interval
         self.last_logged = {}
