@@ -5,6 +5,8 @@
 !src/
 !src/**
 
+!config.ini
+
 # Virtual environments
 venv/
 env/
