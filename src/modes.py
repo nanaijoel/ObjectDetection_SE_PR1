@@ -19,7 +19,7 @@ class AppRunner:
 
     def run_camera_mode(self):
         self.camera = Camera(self.config_manager.load_camera_params())
-        cap = self.camera.initialize_camera()
+        self.camera.initialize_camera()
         detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('CAMERA'))
 
         while True:

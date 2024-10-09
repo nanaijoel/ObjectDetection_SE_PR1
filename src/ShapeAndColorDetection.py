@@ -7,7 +7,8 @@ class ShapeAndColorDetection:
         self.shape_params = shape_params
         self.color_ranges = color_ranges
 
-    def detect_shape(self, contour):
+    @staticmethod
+    def detect_shape(contour):
         peri = cv2.arcLength(contour, True)
         approx = cv2.approxPolyDP(contour, 0.04 * peri, True)
         vertices = len(approx)
