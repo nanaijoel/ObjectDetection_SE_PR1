@@ -1,10 +1,12 @@
 import csv
 import datetime
-
+import os
 
 class DataLogger:
-    def __init__(self, filename, log_interval=1.0):
-        self.filename = filename
+    def __init__(self, config):
+        log_file = os.path.join(config['DEFAULT']['log_folder'], 'data_log.csv')
+        log_interval = float(config['DEFAULT']['log_interval'])
+        self.filename = log_file
         self.log_interval = log_interval
         self.last_log_time = None
         self._initialize_csv()

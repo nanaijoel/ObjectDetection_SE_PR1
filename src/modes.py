@@ -1,66 +1,53 @@
 import cv2
 import os
-from src.ShapeAndColorDetection import process_frame
+from src.ShapeAndColorDetection import ShapeAndColorDetection
 from src.logger import DataLogger
-from src.visualize_shapes import visualize_shapes
-from src.config_manager import load_shape_params, load_camera_params, load_color_ranges, load_config
+from src.visualize_shapes import Visualizer
+from src.config_manager import ConfigManager
+from src.camera import Camera
 
+class AppRunner:
+    def __init__(self):
+        self.config_manager = ConfigManager()
+        self.shape_params = self.config_manager.load_shape_params()
+        self.color_ranges = self.config_manager.load_color_ranges('CAMERA')
+        self.logger = DataLogger(self.config_manager.config)
+        self.visualizer = Visualizer()
+        self.camera = Camera(self.config_manager.load_camera_params())
 
-def set_camera(camera_params):
-    cap = cv2.VideoCapture(camera_params['camera_index'])
-    cap.set(cv2.CAP_PROP_FPS, camera_params['fps'])
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(camera_params['window_size'][0]))
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(camera_params['window_size'][1]))
-    return cap
+    def run_camera_mode(self):
+        cap = self.camera.initialize_camera()
+        detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
 
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            shapes = detection.process_frame(frame)
+            frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes, self.logger)
 
-def initialize_logger(config):
-    log_file = os.path.join(config['DEFAULT']['log_folder'], 'data_log.csv')
-    log_interval = float(config['DEFAULT']['log_interval'])
-    return DataLogger(log_file, log_interval=log_interval)
+            cv2.imshow("Camera Feed", frame_with_shapes)
 
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
-def run_camera_mode():
-    config = load_config(); shape_params = load_shape_params(config)
-    camera_params = load_camera_params(config); color_ranges = load_color_ranges(config, 'CAMERA')
+        cap.release()
+        cv2.destroyAllWindows()
 
-    logger = initialize_logger(config)
-    cap = set_camera(camera_params)
+    def run_image_mode(self):
+        detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('IMAGE'))
 
-    while True:
-        cap.set(cv2.CAP_PROP_POS_FRAMES, cap.get(cv2.CAP_PROP_POS_FRAMES) + 5)
+        for filename in os.listdir(self.config_manager.config['IMAGE']['image_directory']):
+            if filename.endswith(('.png', '.jpg', '.jpeg')):
+                image_path = os.path.join(self.config_manager.config['IMAGE']['image_directory'], filename)
+                image = cv2.imread(image_path)
+                if image is None:
+                    print(f"Error loading image: {filename}")
+                    continue
 
-        ret, frame = cap.read()
-        if not ret:
-            break
-        shapes = process_frame(frame, shape_params, color_ranges)
-        frame_with_shapes = visualize_shapes(frame, shapes, logger)
-        cv2.imshow("Camera Feed", frame_with_shapes)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+                shapes = detection.process_frame(image)
+                image_with_shapes = self.visualizer.visualize_shapes(image, shapes, self.logger)
+                cv2.imshow(f"Image: {filename}", image_with_shapes)
+                cv2.waitKey(0)
 
-    cap.release()
-    cv2.destroyAllWindows()
-
-
-def run_image_mode():
-    config = load_config()
-    shape_params = load_shape_params(config)
-    color_ranges = load_color_ranges(config, 'IMAGE')
-
-    logger = initialize_logger(config)
-
-    for filename in os.listdir(config['IMAGE']['image_directory']):
-        if filename.endswith(('.png', '.jpg', '.jpeg')):
-            image_path = os.path.join(config['IMAGE']['image_directory'], filename)
-            image = cv2.imread(image_path)
-            if image is None:
-                print(f"Error loading image: {filename}")
-                continue
-
-            shapes = process_frame(image, shape_params, color_ranges)
-            image_with_shapes = visualize_shapes(image, shapes, logger)
-            cv2.imshow(f"Image: {filename}", image_with_shapes)
-            cv2.waitKey(0)
-
-    cv2.destroyAllWindows()
+        cv2.destroyAllWindows()

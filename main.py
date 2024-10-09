@@ -1,5 +1,5 @@
 import argparse
-from src.modes import run_camera_mode, run_image_mode
+from src.modes import AppRunner
 
 
 def main():
@@ -9,10 +9,12 @@ def main():
 
     args = parser.parse_args()
 
+    app_runner = AppRunner()  # Instantiate the AppRunner class for running modes
+
     if args.mode == 'CAMERA':
-        run_camera_mode()
+        app_runner.run_camera_mode()
     elif args.mode == 'IMAGE':
-        run_image_mode()
+        app_runner.run_image_mode()
 
 
 if __name__ == "__main__":
