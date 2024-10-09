@@ -2,6 +2,7 @@ import csv
 import datetime
 import os
 
+
 class DataLogger:
     def __init__(self, config):
         log_file = os.path.join(config['DEFAULT']['log_folder'], 'data_log.csv')

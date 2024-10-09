@@ -1,7 +1,6 @@
 import argparse
 from src.modes import AppRunner
 
-
 def main():
     parser = argparse.ArgumentParser(description="Shape and Color Detection")
     parser.add_argument('--mode', type=str, choices=['CAMERA', 'IMAGE'], required=True,
@@ -9,7 +8,7 @@ def main():
 
     args = parser.parse_args()
 
-    app_runner = AppRunner()  # Instantiate the AppRunner class for running modes
+    app_runner = AppRunner()
 
     if args.mode == 'CAMERA':
         app_runner.run_camera_mode()
