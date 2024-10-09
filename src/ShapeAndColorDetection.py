@@ -13,12 +13,20 @@ class ShapeAndColorDetection:
         approx = cv2.approxPolyDP(contour, 0.04 * peri, True)
         vertices = len(approx)
 
+        M = cv2.moments(contour)
+        if M['m00'] == 0:
+            return "undefined"
+
         if vertices == 3:
             return "Triangle"
         elif vertices == 4:
             x, y, w, h = cv2.boundingRect(approx)
             aspect_ratio = w / float(h)
-            return "Square" if 0.95 <= aspect_ratio <= 1.05 else "Rectangle"
+            extent = cv2.contourArea(contour) / (w * h)
+            if 0.95 <= aspect_ratio <= 1.05 and 0.8 <= extent <= 1.0:
+                return "Square"
+            else:
+                return "Rectangle"
         elif vertices == 5:
             return "Pentagon"
         elif vertices == 6:
@@ -28,7 +36,7 @@ class ShapeAndColorDetection:
 
     def detect_color(self, hsv, contour):
         mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
-        cv2.drawContours(mask, [contour], -1, 255, -1)
+        cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
         mean_hsv = cv2.mean(hsv, mask=mask)[:3]
 
         for color, (lower, upper) in self.color_ranges.items():
