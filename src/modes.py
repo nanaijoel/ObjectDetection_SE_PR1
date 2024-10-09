@@ -6,33 +6,35 @@ from src.visualize_shapes import Visualizer
 from src.config_manager import ConfigManager
 from src.camera import Camera
 
+
 class AppRunner:
-    def __init__(self):
+    def __init__(self, mode):
         self.config_manager = ConfigManager()
+        self.mode = mode
         self.shape_params = self.config_manager.load_shape_params()
-        self.color_ranges = self.config_manager.load_color_ranges('CAMERA')
-        self.logger = DataLogger(self.config_manager.config)
+        self.color_ranges = self.config_manager.load_color_ranges(self.mode)
+        self.logger = DataLogger(self.config_manager.config, self.mode)
         self.visualizer = Visualizer()
-        self.camera = Camera(self.config_manager.load_camera_params())
+        self.camera = None
 
     def run_camera_mode(self):
+        self.camera = Camera(self.config_manager.load_camera_params())
         cap = self.camera.initialize_camera()
-        detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
+        detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('CAMERA'))
 
         while True:
-            ret, frame = cap.read()
-            if not ret:
+            frame = self.camera.read_frame()
+            if frame is None:
                 break
             shapes = detection.process_frame(frame)
             frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes, self.logger)
-
             cv2.imshow("Camera Feed", frame_with_shapes)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-        cap.release()
-        cv2.destroyAllWindows()
+        self.camera.release_camera()
+        self.camera.close_window()
 
     def run_image_mode(self):
         detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('IMAGE'))

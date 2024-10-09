@@ -1,7 +1,6 @@
 import cv2
 
 
-
 class Camera:
     def __init__(self, camera_params):
         self.camera_params = camera_params
@@ -34,5 +33,6 @@ class Camera:
             }
         return "Camera is not initialized or not opened."
 
-    def close_window(self):
+    @staticmethod
+    def close_window():
         cv2.destroyAllWindows()

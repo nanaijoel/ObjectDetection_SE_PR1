@@ -1,3 +1,9 @@
+# Ignore everything
+*
+
+# Allow tracking of everything inside the src/ directory
+!src/
+!src/**
 
 # Virtual environments
 venv/
