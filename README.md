@@ -1,6 +1,7 @@
 # ObjectDetection_SE_PR1
 
 Webcam application which identifies geometrical objects such as triangles, rectangles, circles, pentagons and hexagons in different colors in the camera's field of view.
+
 Further, there is a mode to also analyze the shapes in images put in the image folder.
 
 # Features
@@ -13,18 +14,18 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 # How to Use
 
     1. Install dependencies:
-
     - Use the provided requirements.txt file to set up the recommended virtual environment 
       with the correct module versions.
     - Install the dependencies by running: pip install -r requirements.txt
     - Otherwise, just check the version of the specific modules which we use
 
+
     2. Run the application:
     - Navigate to the project folder and run: python main.py --mode <mode_name>
-    - Available modes: 
-    IMAGE: Detects shapes and colors in images from the input directory. 
-    CAMERA: Detects shapes and colors using the webcam.
-    For example, type python main.py --mode CAMERA to run the application in camera mode.
+      Available modes: 
+      IMAGE: Detects shapes and colors in images from the input directory. 
+      CAMERA: Detects shapes and colors using the webcam.
+      For example, type python main.py --mode CAMERA to run the application in camera mode.
     - To close the camera or image windows and quit the program, press the 'q' key. 
 
 # Configuration
