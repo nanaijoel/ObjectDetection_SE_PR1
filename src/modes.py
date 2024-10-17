@@ -12,12 +12,7 @@ class AppRunner:
         self.config_manager = ConfigManager()
         self.mode = mode
         self.shape_params = self.config_manager.load_shape_params()
-
-        if self.mode == 'CAMERA':
-            self.color_ranges = self.config_manager.load_color_ranges('CAMERA')
-        elif self.mode == 'IMAGE':
-            self.color_ranges = self.config_manager.load_color_ranges('IMAGE')
-
+        self.color_ranges = self.config_manager.load_color_ranges(self.mode)
         self.logger = DataLogger(self.config_manager.config, self.mode)
         self.visualizer = Visualizer()
         self.camera = None
@@ -26,7 +21,6 @@ class AppRunner:
     def run_camera_mode(self):
         self.camera = Camera(self.config_manager.load_camera_params())
         self.camera.initialize_camera()
-        print(f"Mode: {self.mode}, Color Ranges: {self.color_ranges}")
 
         while True:
             frame = self.camera.read_frame()
