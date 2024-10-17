@@ -12,21 +12,27 @@ class AppRunner:
         self.config_manager = ConfigManager()
         self.mode = mode
         self.shape_params = self.config_manager.load_shape_params()
-        self.color_ranges = self.config_manager.load_color_ranges(self.mode)
+
+        if self.mode == 'CAMERA':
+            self.color_ranges = self.config_manager.load_color_ranges('CAMERA')
+        elif self.mode == 'IMAGE':
+            self.color_ranges = self.config_manager.load_color_ranges('IMAGE')
+
         self.logger = DataLogger(self.config_manager.config, self.mode)
         self.visualizer = Visualizer()
         self.camera = None
+        self.detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
 
     def run_camera_mode(self):
         self.camera = Camera(self.config_manager.load_camera_params())
         self.camera.initialize_camera()
-        detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('CAMERA'))
+        print(f"Mode: {self.mode}, Color Ranges: {self.color_ranges}")
 
         while True:
             frame = self.camera.read_frame()
             if frame is None:
                 break
-            shapes = detection.process_frame(frame)
+            shapes = self.detection.process_frame(frame)
             frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes, self.logger)
             cv2.imshow("Camera Feed", frame_with_shapes)
 
@@ -37,8 +43,6 @@ class AppRunner:
         self.camera.close_window()
 
     def run_image_mode(self):
-        detection = ShapeAndColorDetection(self.shape_params, self.config_manager.load_color_ranges('IMAGE'))
-
         for filename in os.listdir(self.config_manager.config['IMAGE']['image_directory']):
             if filename.endswith(('.png', '.jpg', '.jpeg')):
                 image_path = os.path.join(self.config_manager.config['IMAGE']['image_directory'], filename)
@@ -47,7 +51,7 @@ class AppRunner:
                     print(f"Error loading image: {filename}")
                     continue
 
-                shapes = detection.process_frame(image)
+                shapes = self.detection.process_frame(image)
                 image_with_shapes = self.visualizer.visualize_shapes(image, shapes, self.logger)
                 cv2.imshow(f"Image: {filename}", image_with_shapes)
                 cv2.waitKey(0)
