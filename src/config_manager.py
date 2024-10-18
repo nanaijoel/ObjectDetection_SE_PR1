@@ -1,3 +1,4 @@
+#Config class, handles reading the config file
 import configparser
 
 

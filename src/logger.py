@@ -1,3 +1,4 @@
+#Logger class, handles creating a document and writing logs in there
 import csv
 import datetime
 import os

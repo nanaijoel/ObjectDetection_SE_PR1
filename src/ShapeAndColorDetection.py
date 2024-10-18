@@ -1,3 +1,4 @@
+#ShapeAndColorDetection class, handles image processing
 import cv2
 import numpy as np
 

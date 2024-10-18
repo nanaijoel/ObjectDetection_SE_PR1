@@ -1,3 +1,4 @@
+#Camera class, handles initialisation and readout of the camera.
 import cv2
 
 
