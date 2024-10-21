@@ -13,7 +13,7 @@ class AppRunner:
     def __init__(self, mode):
         self.config_manager = ConfigManager()
         self.mode = mode
-        self.shape_params = self.config_manager.load_shape_params()
+        self.shape_params = self.config_manager.load_shape_params(self.mode)
         self.color_ranges = self.config_manager.load_color_ranges(self.mode)
         self.logger = DataLogger(self.config_manager.config, self.mode)
         self.visualizer = Visualizer()
