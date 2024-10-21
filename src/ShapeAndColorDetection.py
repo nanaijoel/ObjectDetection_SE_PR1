@@ -1,16 +1,3 @@
-""" 
-Real-Time Shape and Color Detection Module
-
-Description:
-Detecting geometric shapes and colors in real-time using
-live camera feed or static images. 
-Identification of shapes like triangles, rectangles, squares, and circles, 
-and their colors (red, green, blue, yellow, and violet. 
-Detection data is logged into a CSV file with timestamps. 
-Command-line arguments enable switching between 
-camera and image modes and setting log output directories.
-"""
-
 import cv2
 import numpy as np
 
