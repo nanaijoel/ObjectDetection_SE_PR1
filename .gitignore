@@ -1,0 +1,32 @@
+# Ignore everything
+*
+
+# Allow tracking of everything inside the src/ directory
+!src/
+!src/**
+
+!config.ini
+
+# Virtual environments
+venv/
+env/
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore only data_log.csv in the logs folder
+logs/data_log.csv
+
+# Allow tracking of other files in the logs folder
+!logs/
+!logs/.gitkeep
+!logs/ReadMe_Logger.md
+
+# IDE specific
+.idea/
+.vscode/
+
+# OS specific
+.DS_Store
+Thumbs.db
