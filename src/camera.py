@@ -10,6 +10,9 @@ class Camera:
         self.cap = None
 
     def initialize_camera(self):
+        """
+        initializes the camera
+        """
         self.cap = cv2.VideoCapture(self.camera_params['camera_index'])
         self.cap.set(cv2.CAP_PROP_FPS, self.camera_params['fps'])
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(self.camera_params['window_size'][0]))
@@ -28,6 +31,11 @@ class Camera:
             self.cap.release()
 
     def get_info(self):
+        """
+        get information about the camera
+        Resolution, FPS and camera index
+        :return:
+        """
         if self.cap is not None and self.cap.isOpened():
             return {
                 'Resolution': (self.cap.get(cv2.CAP_PROP_FRAME_WIDTH), self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),

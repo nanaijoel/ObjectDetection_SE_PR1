@@ -1,5 +1,4 @@
-# AppRunner class, handles startup argument. Either camera or image mode.
-
+#AppRunner class, handles startup argument. Either camera or image mode.
 import cv2
 import os
 from src.ShapeAndColorDetection import ShapeAndColorDetection

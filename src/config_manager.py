@@ -15,7 +15,10 @@ class ConfigManager:
             'min_contour_area': int(self.config['SHAPE_DETECTION']['min_contour_area']),
             'canny_threshold1': int(self.config['SHAPE_DETECTION']['canny_threshold1']),
             'canny_threshold2': int(self.config['SHAPE_DETECTION']['canny_threshold2']),
-            'blur_kernel_size': int(self.config['SHAPE_DETECTION']['blur_kernel_size'])
+            'blur_kernel_size': int(self.config['SHAPE_DETECTION']['blur_kernel_size']),
+            'approx_poly_epsilon_factor': float(self.config['SHAPE_DETECTION']['approx_poly_epsilon_factor']),
+            'aspect_ratio_tolerance': float(self.config['SHAPE_DETECTION']['aspect_ratio_tolerance']),
+            'extent_threshold': float(self.config['SHAPE_DETECTION']['extent_threshold'])
         }
 
     def load_camera_params(self):
