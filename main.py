@@ -1,4 +1,5 @@
-#main file, runs the program
+# main file, runs the program
+
 import argparse
 from src.modes import AppRunner
 
