@@ -25,6 +25,11 @@ class DataLogger:
             pass
 
     def log_data(self, shape, color):
+        """
+        Writes given parameters to logfile with actual timestamp
+        :shape: string describing the shape
+        :color: string describing the color
+        """
         current_time = datetime.datetime.now()
         if self.mode == 'CAMERA':
             if self.last_log_time is None or (current_time - self.last_log_time).total_seconds() >= self.log_interval:
