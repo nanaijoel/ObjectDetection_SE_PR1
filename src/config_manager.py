@@ -1,4 +1,5 @@
-#Config class, handles reading the config file
+# Config class, handles reading the config file
+
 import configparser
 
 

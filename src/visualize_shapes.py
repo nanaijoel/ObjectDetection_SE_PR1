@@ -1,4 +1,5 @@
-#Visualizer class, handles visualization of detected forms
+# Visualizer class, handles visualization of detected forms
+
 import cv2
 
 
