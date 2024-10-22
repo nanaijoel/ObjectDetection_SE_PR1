@@ -4,7 +4,7 @@ import cv2
 
 
 class Visualizer:
-    def __init__(self):
+    def __init__(self, logger=None):
         # Define color map for BGR colors
         self.color_map = {
             'red': (0, 0, 255),
@@ -18,11 +18,11 @@ class Visualizer:
             'white': (255, 255, 255)
         }
         self.text_color = self.color_map['black']
+        self.logger = logger
 
-    def visualize_shapes(self, frame, shapes, logger=None):
+    def visualize_shapes(self, frame, shapes):
         for contour, shape, color_name in shapes:
             contour_color = self.color_map['brown']
-
             fill_color = self.color_map.get(color_name, self.color_map['white'])
 
             cv2.drawContours(frame, [contour], -1, fill_color, thickness=cv2.FILLED)
@@ -35,7 +35,7 @@ class Visualizer:
 
                 cv2.putText(frame, shape, (cX - 20, cY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.text_color, 2)
 
-                if logger:
-                    logger.log_data(shape, color_name)
+                if self.logger:
+                    self.logger.log_data(shape, color_name)
 
         return frame

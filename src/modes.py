@@ -16,9 +16,11 @@ class AppRunner:
         self.shape_params = self.config_manager.load_shape_params(self.mode)
         self.color_ranges = self.config_manager.load_color_ranges(self.mode)
         self.logger = DataLogger(self.config_manager.config, self.mode)
-        self.visualizer = Visualizer()
+        self.visualizer = Visualizer(self.logger)
         self.camera = None
         self.detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
+
+
 
     def run_camera_mode(self):
         self.camera = Camera(self.config_manager.load_camera_params())
@@ -29,7 +31,7 @@ class AppRunner:
             if frame is None:
                 break
             shapes = self.detection.process_frame(frame)
-            frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes, self.logger)
+            frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes)
             cv2.imshow("Camera Feed", frame_with_shapes)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -48,7 +50,7 @@ class AppRunner:
                     continue
 
                 shapes = self.detection.process_frame(image)
-                image_with_shapes = self.visualizer.visualize_shapes(image, shapes, self.logger)
+                image_with_shapes = self.visualizer.visualize_shapes(image, shapes)
                 cv2.imshow(f"Image: {filename}", image_with_shapes)
                 cv2.waitKey(0)
 
