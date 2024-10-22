@@ -20,11 +20,10 @@ class ConfigManager:
             'min_contour_area': int(self.config[section]['min_contour_area']),
             'canny_threshold1': int(self.config[section]['canny_threshold1']),
             'canny_threshold2': int(self.config[section]['canny_threshold2']),
-            'blur_kernel_size1': int(self.config[section]['blur_kernel_size1']),
-            'blur_kernel_size2': int(self.config[section]['blur_kernel_size2']),
+            'kernel_x': int(self.config[section]['kernel_x']),
+            'kernel_y': int(self.config[section]['kernel_y']),
             'approx_poly_epsilon_factor': float(self.config[section]['approx_poly_epsilon_factor']),
-            'aspect_ratio_tolerance': float(self.config[section]['aspect_ratio_tolerance']),
-            'extent_threshold': float(self.config[section]['extent_threshold'])
+            'tolerance': float(self.config[section]['tolerance'])
         }
 
     def load_camera_params(self):

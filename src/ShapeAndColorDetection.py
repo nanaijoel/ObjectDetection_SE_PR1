@@ -14,19 +14,12 @@ class ShapeAndColorDetection:
         approx = cv2.approxPolyDP(contour, self.shape_params['approx_poly_epsilon_factor'] * peri, True)
         vertices = len(approx)
 
-        M = cv2.moments(contour)
-        if M['m00'] == 0:
-            return "undefined"
-
         if vertices == 3:
             return "Triangle"
         elif vertices == 4:
             x, y, w, h = cv2.boundingRect(approx)
             aspect_ratio = w / float(h)
-            extent = cv2.contourArea(contour) / (w * h)
-            if ((1 - self.shape_params['aspect_ratio_tolerance'])
-                    <= aspect_ratio <= (1 + self.shape_params['aspect_ratio_tolerance'])
-                    and extent >= self.shape_params['extent_threshold']):
+            if (1 - self.shape_params['tolerance']) <= aspect_ratio <= (1 + self.shape_params['tolerance']):
                 return "Square"
             else:
                 return "Rectangle"
@@ -52,8 +45,7 @@ class ShapeAndColorDetection:
     def process_frame(self, frame):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (self.shape_params['blur_kernel_size1'],
-                                          self.shape_params['blur_kernel_size2']), 0)
+        blurred = cv2.GaussianBlur(gray, (self.shape_params['kernel_x'], self.shape_params['kernel_y']), 0)
         edges = cv2.Canny(blurred, self.shape_params['canny_threshold1'], self.shape_params['canny_threshold2'])
 
         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
