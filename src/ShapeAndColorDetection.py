@@ -52,8 +52,8 @@ class ShapeAndColorDetection:
     def process_frame(self, frame):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (self.shape_params['blur_kernel_size'],
-                                          self.shape_params['blur_kernel_size']), 0)
+        blurred = cv2.GaussianBlur(gray, (self.shape_params['blur_kernel_size1'],
+                                          self.shape_params['blur_kernel_size2']), 0)
         edges = cv2.Canny(blurred, self.shape_params['canny_threshold1'], self.shape_params['canny_threshold2'])
 
         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
