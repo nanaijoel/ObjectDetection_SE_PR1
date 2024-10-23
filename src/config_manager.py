@@ -48,6 +48,8 @@ class ConfigManager:
                      tuple(map(int, self.config[color_config]['blue_upper'].split(',')))),
             'yellow': (tuple(map(int, self.config[color_config]['yellow_lower'].split(','))),
                        tuple(map(int, self.config[color_config]['yellow_upper'].split(',')))),
+            'pink': (tuple(map(int, self.config[color_config]['pink_lower'].split(','))),
+                     tuple(map(int, self.config[color_config]['pink_upper'].split(',')))),
             'violet': (tuple(map(int, self.config[color_config]['violet_lower'].split(','))),
-                       tuple(map(int, self.config[color_config]['violet_upper'].split(','))))
+                       tuple(map(int, self.config[color_config]['violet_upper'].split(',')))),
         }

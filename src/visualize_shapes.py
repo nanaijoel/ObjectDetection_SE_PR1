@@ -11,11 +11,12 @@ class Visualizer:
             'green': (0, 255, 0),
             'blue': (255, 0, 0),
             'yellow': (0, 255, 255),
-            'pink': (255, 0, 255),
+            'pink': (222, 89, 176),
             'black': (0, 0, 0),
             'gray': (128, 128, 128),
             'brown': (42, 42, 165),
-            'white': (255, 255, 255)
+            'white': (255, 255, 255),
+            'violet': (120, 40, 74),
         }
         self.text_color = self.color_map['black']
         self.logger = logger

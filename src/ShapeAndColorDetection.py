@@ -12,23 +12,36 @@ class ShapeAndColorDetection:
     def detect_shape(self, contour):
         peri = cv2.arcLength(contour, True)
         approx = cv2.approxPolyDP(contour, self.shape_params['approx_poly_epsilon_factor'] * peri, True)
+        return self.get_shape(approx, contour, peri)
+
+    def get_shape(self, approx, contour, peri):
         vertices = len(approx)
 
         if vertices == 3:
             return "Triangle"
         elif vertices == 4:
-            x, y, w, h = cv2.boundingRect(approx)
-            aspect_ratio = w / float(h)
-            return "Square" if ((1 - self.shape_params['tolerance']) <= aspect_ratio <=
-                                (1 + self.shape_params['tolerance'])) else "Rectangle"
+            return self._detect_quadrilateral(approx)
         elif vertices == 5:
             return "Pentagon"
         elif vertices == 6:
             return "Hexagon"
+        else:
+            return self._detect_circle(contour, peri)
+
+    def _detect_quadrilateral(self, approx):
+        x, y, w, h = cv2.boundingRect(approx)
+        aspect_ratio = w / float(h)
+        if (1 - self.shape_params['tolerance']) <= aspect_ratio <= (1 + self.shape_params['tolerance']):
+            return "Square"
+        return "Rectangle"
+
+    @staticmethod
+    def _detect_circle(contour, peri):
         area = cv2.contourArea(contour)
         circularity = 4 * np.pi * (area / (peri * peri))
         if circularity > 0.4:
             return "Circle"
+        return "undefined"
 
     def detect_color(self, hsv, contour):
         mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
@@ -42,7 +55,7 @@ class ShapeAndColorDetection:
                 return color
         return "undefined"
 
-    def process_frame(self, frame):
+    def process_frame(self, frame, target_shape=None):
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (self.shape_params['kernel_x'], self.shape_params['kernel_y']), 0)
@@ -54,6 +67,8 @@ class ShapeAndColorDetection:
         for contour in contours:
             if cv2.contourArea(contour) > self.shape_params['min_contour_area']:
                 shape = self.detect_shape(contour)
-                color = self.detect_color(hsv, contour)
-                shapes.append((contour, shape, color))
+                if target_shape is None or shape == target_shape:
+                    color = self.detect_color(hsv, contour)
+                    shapes.append((contour, shape, color))
         return shapes
+
