@@ -19,15 +19,15 @@ class ShapeAndColorDetection:
         elif vertices == 4:
             x, y, w, h = cv2.boundingRect(approx)
             aspect_ratio = w / float(h)
-            if (1 - self.shape_params['tolerance']) <= aspect_ratio <= (1 + self.shape_params['tolerance']):
-                return "Square"
-            else:
-                return "Rectangle"
+            return "Square" if ((1 - self.shape_params['tolerance']) <= aspect_ratio <=
+                                (1 + self.shape_params['tolerance'])) else "Rectangle"
         elif vertices == 5:
             return "Pentagon"
         elif vertices == 6:
             return "Hexagon"
-        else:
+        area = cv2.contourArea(contour)
+        circularity = 4 * np.pi * (area / (peri * peri))
+        if circularity > 0.4:
             return "Circle"
 
     def detect_color(self, hsv, contour):

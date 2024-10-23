@@ -15,6 +15,10 @@ env/
 *.pyc
 __pycache__/
 
+
+!Input/Images/
+!Input/Images/*.png
+
 # Ignore only data_log.csv in the logs folder
 logs/data_log.csv
 

@@ -1,5 +1,4 @@
-#  Camera class, handles initialisation and readout of the camera.
-
+# Camera class, handles initialization and readout of the camera.
 
 import cv2
 
@@ -11,7 +10,8 @@ class Camera:
 
     def initialize_camera(self):
         """
-        initializes the camera
+        Initializes the camera with the specified index, FPS, and resolution.
+        :return: cv2.VideoCapture object for the camera.
         """
         self.cap = cv2.VideoCapture(self.camera_params['camera_index'])
         self.cap.set(cv2.CAP_PROP_FPS, self.camera_params['fps'])
@@ -20,6 +20,7 @@ class Camera:
         return self.cap
 
     def read_frame(self):
+
         if self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
@@ -27,14 +28,14 @@ class Camera:
         return None
 
     def release_camera(self):
+
         if self.cap is not None:
             self.cap.release()
 
     def get_info(self):
         """
-        get information about the camera
-        Resolution, FPS and camera index
-        :return:
+        Get information about the camera such as resolution, FPS, and camera index.
+        :return: Dictionary with camera info or message if camera is not initialized.
         """
         if self.cap is not None and self.cap.isOpened():
             return {
@@ -50,6 +51,10 @@ class Camera:
 
     @staticmethod
     def list_webcams():
+        """
+        Lists available webcams connected to the system.
+        :return: List of available camera indices.
+        """
         index = 0
         arr = []
         while True:
