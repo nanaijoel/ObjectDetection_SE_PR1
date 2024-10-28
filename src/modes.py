@@ -2,11 +2,14 @@
 
 import cv2
 import os
+import sys
 from src.ShapeAndColorDetection import ShapeAndColorDetection
 from src.logger import DataLogger
 from src.visualize_shapes import Visualizer
 from src.config_manager import ConfigManager
 from src.camera import Camera
+from src.GUI import GUIMode
+from PyQt5.QtWidgets import QApplication
 
 
 class AppRunner:
@@ -55,3 +58,9 @@ class AppRunner:
                 cv2.waitKey(0)
 
         cv2.destroyAllWindows()
+
+    def run_gui_mode(self):
+        app = QApplication(sys.argv)
+        window = GUIMode(self.config_manager.load_camera_params(), self.detection, self.visualizer)
+        window.show()
+        sys.exit(app.exec_())

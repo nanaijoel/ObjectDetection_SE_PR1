@@ -71,4 +71,3 @@ class ShapeAndColorDetection:
                     color = self.detect_color(hsv, contour)
                     shapes.append((contour, shape, color))
         return shapes
-
