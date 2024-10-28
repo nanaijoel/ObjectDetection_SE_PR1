@@ -1,7 +1,5 @@
 # Config class, handles reading the config file
-
 import configparser
-
 
 class ConfigManager:
     CONFIG_FILE = 'config.ini'
@@ -11,6 +9,10 @@ class ConfigManager:
         self.config.read(self.CONFIG_FILE)
 
     def load_shape_params(self, mode):
+        """
+        :param mode: CAMERA, IMAGE or GUI
+        :return: config shape parameters
+        """
         if mode == 'CAMERA':
             section = 'SHAPE_DETECTION_CAMERA'
         else:
@@ -34,6 +36,10 @@ class ConfigManager:
         }
 
     def load_color_ranges(self, mode):
+        """
+        :param mode: IMAGE, CAMERA or GUI
+        :return: config colour settings
+        """
         if mode == 'CAMERA':
             color_config = 'COLOR_RANGES_CAMERA'
         else:
