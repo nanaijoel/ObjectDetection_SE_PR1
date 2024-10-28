@@ -1,9 +1,13 @@
+# GUI which allows to filter the detected shapes on one specific shape
+
 import cv2
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QApplication
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QSlider, QLabel, QDockWidget, QMenuBar, \
+    QAction, QMessageBox
 
 from src.camera import Camera
+
 
 # noinspection PyUnresolvedReferences
 class GUIMode(QMainWindow):
@@ -14,26 +18,61 @@ class GUIMode(QMainWindow):
         self.detection = detection
         self.visualizer = visualizer
         self.selected_shape = None
-
-        # Set up video display
+        sliders, labels = self.create_hsv_sliders()
+        self.h_slider, self.s_slider, self.v_slider = sliders
         self.video_label = QLabel(self)
         self.set_video_window_size(self.camera_params['window_size'])
-        self.setWindowTitle("Simple GUI Mode")
+        self.setWindowTitle("GUI Mode")
         self.init_ui()
 
-        # Start camera and frame update
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(33)
         self.camera.initialize_camera()
 
-    def init_ui(self):
-        layout = QVBoxLayout()
-        layout.addWidget(self.video_label)
+    def create_buttons(self):
+        self.create_menu()
+        dock_widget = self.create_dock_widget()
+        self.addDockWidget(Qt.LeftDockWidgetArea, dock_widget)
 
-        # Create "Triangle" filter button
-        triangle_button = QPushButton("Triangle")
-        triangle_button.setStyleSheet("""
+    def create_menu(self):
+        menu_bar = QMenuBar(self)
+        info_menu = menu_bar.addMenu("Info")
+
+        info_action = QAction("Show Info", self)
+        info_action.triggered.connect(self.show_info_popup)
+        info_menu.addAction(info_action)
+
+        self.setMenuBar(menu_bar)
+
+    def create_dock_widget(self):
+        button_layout = QVBoxLayout()
+
+        for btn in self.create_shape_buttons():
+            button_layout.addWidget(btn)
+
+        reset_btn = self.create_reset_button()
+        button_layout.addWidget(reset_btn)
+
+        widget = QWidget()
+        widget.setLayout(button_layout)
+        widget.setStyleSheet("background-color: silver;")
+
+        dock_widget = QDockWidget("Shape Selection", self)
+        dock_widget.setWidget(widget)
+        dock_widget.setFeatures(QDockWidget.NoDockWidgetFeatures)
+
+        return dock_widget
+
+    def create_shape_buttons(self):
+        shapes = [("Triangle", "Triangle"), ("Rectangle", "Rectangle"), ("Square", "Square"),
+                  ("Pentagon", "Pentagon"), ("Hexagon", "Hexagon"), ("Circle", "Circle")]
+
+        return [self.create_shape_button(name, shape) for name, shape in shapes]
+
+    def create_shape_button(self, name, shape):
+        btn = QPushButton(name)
+        btn.setStyleSheet("""
             QPushButton {
                 background-color: black;
                 color: lightgreen;
@@ -47,12 +86,69 @@ class GUIMode(QMainWindow):
                 background-color: #333;
             }
         """)
-        triangle_button.clicked.connect(lambda: self.set_shape_filter("Triangle"))
-        layout.addWidget(triangle_button)
+        btn.clicked.connect(lambda _, s=shape: self.set_shape_filter(s))
+        return btn
+
+    def create_reset_button(self):
+        reset_btn = QPushButton("All shapes")
+        reset_btn.setStyleSheet("""
+            QPushButton {
+                background-color: black;
+                color: yellow;
+                font-weight: bold;
+                border-radius: 8px;
+                border: 3px solid white;
+                min-width: 100px; 
+                min-height: 40px;
+            }
+            QPushButton:hover {
+                background-color: #333;
+            }
+        """)
+        reset_btn.clicked.connect(lambda: self.set_shape_filter(None))
+        return reset_btn
+
+    def show_info_popup(self):
+        info_text = (
+            "Click on a button to filter the shape detection to one shape only. "
+            "Press 'All shapes' to detect all shapes again."
+        )
+        QMessageBox.information(self, "Shape Detection Info", info_text)
+
+    @staticmethod
+    def create_hsv_sliders():
+        sliders = []
+        labels = []
+        for name, min_val, max_val, init_val in [("Hue", 0, 180, 90), ("Saturation", 0, 255, 127),
+                                                 ("Value", 0, 255, 127)]:
+            slider = QSlider(Qt.Horizontal)
+            slider.setMinimum(min_val)
+            slider.setMaximum(max_val)
+            slider.setValue(init_val)
+            sliders.append(slider)
+
+            label = QLabel(name)
+            label.setStyleSheet("font-weight: bold;")
+            labels.append(label)
+
+        return sliders, labels
+
+    def set_video_window_size(self, window_size):
+        width, height = map(int, window_size)
+        self.video_label.setFixedSize(width, height)
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+        layout.addWidget(self.video_label)
+        sliders, labels = self.create_hsv_sliders()
+        for label, slider in zip(labels, sliders):
+            layout.addWidget(label)
+            layout.addWidget(slider)
 
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
+        self.create_buttons()
 
         window_width = int(self.camera_params['window_size'][0])
         window_height = int(self.camera_params['window_size'][1])
@@ -60,10 +156,6 @@ class GUIMode(QMainWindow):
 
     def set_shape_filter(self, shape):
         self.selected_shape = shape
-
-    def set_video_window_size(self, window_size):
-        width, height = map(int, window_size)
-        self.video_label.setFixedSize(width, height)
 
     def update_frame(self):
         frame = self.camera.read_frame()
@@ -73,7 +165,6 @@ class GUIMode(QMainWindow):
 
             frame = cv2.resize(frame, (label_width, label_height))
 
-            # Process frame for selected shape
             shapes = self.detection.process_frame(frame, target_shape=self.selected_shape)
             frame_with_shapes = self.visualizer.visualize_shapes(frame, shapes)
 
@@ -90,4 +181,3 @@ class GUIMode(QMainWindow):
     def closeEvent(self, event):
         self.camera.release_camera()
         event.accept()
-
