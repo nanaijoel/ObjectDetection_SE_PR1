@@ -19,7 +19,7 @@ class AppRunner:
         self.shape_params = self.config_manager.load_shape_params(self.mode)
         self.color_ranges = self.config_manager.load_color_ranges(self.mode)
         self.logger = DataLogger(self.config_manager.config)
-        self.visualizer = Visualizer( self.config_manager.config, self.logger)
+        self.visualizer = Visualizer(self.mode, self.config_manager.config, self.logger)
         self.camera = None
         self.detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
 

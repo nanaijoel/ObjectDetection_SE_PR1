@@ -5,7 +5,7 @@ import datetime
 
 
 class Visualizer:
-    def __init__(self, config, logger=None):
+    def __init__(self, mode, config, logger=None):
         self.color_map = {
             'red': (0, 0, 255),
             'green': (0, 255, 0),
@@ -18,7 +18,11 @@ class Visualizer:
             'white': (255, 255, 255),
             'violet': (120, 40, 74),
         }
-        self.log_interval = float(config['CAMERA']['log_interval'])
+        self.mode = mode
+        if self.mode == 'CAMERA' or 'GUI':
+            self.log_interval = float(config['CAMERA']['log_interval'])
+        else:
+            self.log_interval = None
         self.text_color = self.color_map['black']
         self.logger = logger
         self.last_logged_time = None
