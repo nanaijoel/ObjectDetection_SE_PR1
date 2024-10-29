@@ -27,7 +27,7 @@ class GUIMode(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
-        self.timer.start(33)
+        self.timer.start(30)
         self.camera.initialize_camera()
 
     def create_buttons(self):

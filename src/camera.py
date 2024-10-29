@@ -20,7 +20,9 @@ class Camera:
         return self.cap
 
     def read_frame(self):
-
+        """
+        :return: frame rate if available, else None.
+        """
         if self.cap is not None:
             ret, frame = self.cap.read()
             if ret:
