@@ -9,6 +9,7 @@ Further, there is a mode to also analyze the shapes in images put in the image f
     - Detects shapes like triangles, circles, and rectangles.
     - Recognizes objects in different colors (e.g., red, green, blue).
     - Supports image-based and live webcam detection modes.
+    - In GUI mode, you can filter by a single shape type or view all shape types together.
 
 
 # How to Use
@@ -25,6 +26,7 @@ Further, there is a mode to also analyze the shapes in images put in the image f
       Available modes: 
       IMAGE: Detects shapes and colors in images from the input directory. 
       CAMERA: Detects shapes and colors using the webcam.
+      GUI: Different buttons for shapes. That way the logger and visualization will only react to the selected shape.
       For example, type python main.py --mode CAMERA to run the application in camera mode.
     - To close the camera or image windows and quit the program, press the 'q' key. 
 
@@ -45,4 +47,5 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 
     - The detection algorithm could be further optimized for better accuracy and performance.
     - The color recognition could be expanded to include more color ranges.
-    - The data_log.csv could log only shapes that are recognized over a period of time to filter random detections
+    - Color recognition could be implemented dynamically. At the moment, you have to adjust the values of the parameters
+      according to the current lighting conditions.

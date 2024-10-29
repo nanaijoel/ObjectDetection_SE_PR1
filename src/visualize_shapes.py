@@ -26,6 +26,10 @@ class Visualizer:
         self.text_color = self.color_map['black']
         self.logger = logger
         self.last_logged_time = None
+        self.selected_shape = None
+
+    def set_shape_filter(self, shape):
+        self.selected_shape = shape
 
     def visualize_shapes(self, frame, shapes):
         for contour, shape, color_name in shapes:
@@ -42,10 +46,11 @@ class Visualizer:
                             0.5, self.text_color, 2)
 
         current_time = datetime.datetime.now()
-        if self.logger and (self.last_logged_time is None
-                            or (current_time - self.last_logged_time).total_seconds() >= self.log_interval):
+        if self.logger and (self.last_logged_time is None or (
+                current_time - self.last_logged_time).total_seconds() >= self.log_interval):
             self.last_logged_time = current_time
             for contour, shape, color_name in shapes:
-                self.logger.log_data(shape, color_name)
+                if self.selected_shape is None or shape == self.selected_shape:
+                    self.logger.log_data(shape, color_name)
 
         return frame

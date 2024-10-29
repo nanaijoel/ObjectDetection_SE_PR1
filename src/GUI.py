@@ -30,6 +30,7 @@ class GUIMode(QMainWindow):
         self.timer.start(30)
         self.camera.initialize_camera()
 
+
     def create_buttons(self):
         self.create_menu()
         dock_widget = self.create_dock_widget()
@@ -156,6 +157,7 @@ class GUIMode(QMainWindow):
 
     def set_shape_filter(self, shape):
         self.selected_shape = shape
+        self.visualizer.set_shape_filter(shape)
 
     def update_frame(self):
         frame = self.camera.read_frame()
