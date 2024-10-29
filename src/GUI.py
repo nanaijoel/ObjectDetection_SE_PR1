@@ -3,7 +3,7 @@
 import cv2
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QSlider, QLabel, QDockWidget, QMenuBar, \
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget, QMenuBar, \
     QAction, QMessageBox
 
 from src.camera import Camera
@@ -18,13 +18,10 @@ class GUIMode(QMainWindow):
         self.detection = detection
         self.visualizer = visualizer
         self.selected_shape = None
-        sliders, labels = self.create_hsv_sliders()
-        self.h_slider, self.s_slider, self.v_slider = sliders
         self.video_label = QLabel(self)
         self.set_video_window_size(self.camera_params['window_size'])
         self.setWindowTitle("GUI Mode")
         self.init_ui()
-
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)
@@ -116,23 +113,6 @@ class GUIMode(QMainWindow):
         )
         QMessageBox.information(self, "Shape Detection Info", info_text)
 
-    @staticmethod
-    def create_hsv_sliders():
-        sliders = []
-        labels = []
-        for name, min_val, max_val, init_val in [("Hue", 0, 180, 90), ("Saturation", 0, 255, 127),
-                                                 ("Value", 0, 255, 127)]:
-            slider = QSlider(Qt.Horizontal)
-            slider.setMinimum(min_val)
-            slider.setMaximum(max_val)
-            slider.setValue(init_val)
-            sliders.append(slider)
-
-            label = QLabel(name)
-            label.setStyleSheet("font-weight: bold;")
-            labels.append(label)
-
-        return sliders, labels
 
     def set_video_window_size(self, window_size):
         width, height = map(int, window_size)
@@ -141,10 +121,6 @@ class GUIMode(QMainWindow):
     def init_ui(self):
         layout = QVBoxLayout()
         layout.addWidget(self.video_label)
-        sliders, labels = self.create_hsv_sliders()
-        for label, slider in zip(labels, sliders):
-            layout.addWidget(label)
-            layout.addWidget(slider)
 
         container = QWidget()
         container.setLayout(layout)

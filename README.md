@@ -39,8 +39,8 @@ Further, there is a mode to also analyze the shapes in images put in the image f
       By default, the camera ID is set to 0, but you can change the ID in the config.ini file.
 
 # Ongoing developments
-
-    - GUI mode: The mode is defined in the config.ini file but is not implemented yet.
+    
+    - Adding 3 sliders for Hue, Saturation and Value, so we can modify the camera frame in real time. 
 
 
 # Optimizations
