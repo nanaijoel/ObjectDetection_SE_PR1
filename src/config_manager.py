@@ -1,7 +1,5 @@
 # Config class, handles reading the config file
-
 import configparser
-
 
 class ConfigManager:
     CONFIG_FILE = 'config.ini'
