@@ -3,7 +3,7 @@
 import cv2
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QSlider, QLabel, QDockWidget, QMenuBar, \
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget, QMenuBar, \
     QAction, QMessageBox
 
 from src.camera import Camera
@@ -11,11 +11,10 @@ from src.camera import Camera
 
 # noinspection PyUnresolvedReferences
 class GUIMode(QMainWindow):
-    def __init__(self, camera_params, detection, visualizer, logger):
+    def __init__(self, camera_params, detection, visualizer):
         super().__init__()
         self.camera_params = camera_params
         self.camera = Camera(camera_params)
-        self.logger = logger
         self.detection = detection
         self.visualizer = visualizer
         self.selected_shape = None
@@ -133,7 +132,7 @@ class GUIMode(QMainWindow):
 
     def set_shape_filter(self, shape):
         self.selected_shape = shape
-        self.logger.set_shape_filter(shape)
+        # self.logger.set_shape_filter(shape)
 
     def update_frame(self):
         frame = self.camera.read_frame()

@@ -61,6 +61,6 @@ class AppRunner:
 
     def run_gui_mode(self):
         app = QApplication(sys.argv)
-        window = GUIMode(self.config_manager.load_camera_params(), self.detection, self.visualizer, self.logger)
+        window = GUIMode(self.config_manager.load_camera_params(), self.detection, self.visualizer)
         window.show()
         sys.exit(app.exec_())

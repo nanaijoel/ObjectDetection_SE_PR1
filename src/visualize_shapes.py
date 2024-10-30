@@ -33,7 +33,6 @@ class Visualizer:
                 cv2.putText(frame, shape, (cX - 20, cY - 10), cv2.FONT_HERSHEY_SIMPLEX,
                             0.5, self.text_color, 2)
 
-        # Log shapes using the helper function
         self.logger.log_shapes(shapes)
 
         return frame

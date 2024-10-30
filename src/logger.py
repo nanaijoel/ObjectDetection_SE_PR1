@@ -26,8 +26,6 @@ class DataLogger:
         except FileExistsError:
             pass
 
-    def set_shape_filter(self, shape):
-        self.selected_shape = shape
 
     def log_shapes(self, shapes):
 
