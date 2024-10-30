@@ -17,8 +17,9 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 1. Get repository:
 - Clone the repository to your local development environment (e.g., your IDE) using the following command:
 
-
-    git clone https://github.com/nanaijoel/ObjectDetection_SE_PR1.git
+  ```
+  git clone https://github.com/nanaijoel/ObjectDetection_SE_PR1.git
+  ```
 
 - Alternatively you can download the project as a zip file from github and copy or move the project into your IDE
 
@@ -28,8 +29,10 @@ Further, there is a mode to also analyze the shapes in images put in the image f
   with the correct module versions.
 - Install the dependencies by running:
 
+  ```
+  pip install -r requirements.txt
+  ```
 
-    pip install -r requirements.txt
 - Otherwise, just check the version of the specific modules which we use
 
 
@@ -42,8 +45,10 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 
 For example, to run the application in camera mode, type in terminal:
 
+  ```
+  python main.py --mode CAMERA
+  ```
 
-    python main.py --mode CAMERA
 - To close the camera or image windows and quit the program, press the 'q' key. 
 
 # Configuration
