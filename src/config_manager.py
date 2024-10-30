@@ -15,7 +15,7 @@ class ConfigManager:
         :param mode: CAMERA, IMAGE or GUI
         :return: config shape parameters
         """
-        if mode == 'CAMERA':
+        if mode == 'CAMERA' or mode == 'GUI':
             section = 'SHAPE_DETECTION_CAMERA'
         else:
             section = 'SHAPE_DETECTION_IMAGE'
@@ -42,7 +42,7 @@ class ConfigManager:
         :param mode: IMAGE, CAMERA or GUI
         :return: config colour settings
         """
-        if mode == 'CAMERA':
+        if mode == 'CAMERA' or mode == 'GUI':
             color_config = 'COLOR_RANGES_CAMERA'
         else:
             color_config = 'COLOR_RANGES_IMAGE'

@@ -19,7 +19,7 @@ class Visualizer:
             'violet': (120, 40, 74),
         }
         self.mode = mode
-        if self.mode == 'CAMERA' or 'GUI':
+        if self.mode == 'CAMERA' or self.mode == 'GUI':
             self.log_interval = float(config['CAMERA']['log_interval'])
         else:
             self.log_interval = None
