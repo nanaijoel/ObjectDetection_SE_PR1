@@ -3,7 +3,7 @@
 import cv2
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QDockWidget, QMenuBar, \
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QSlider, QLabel, QDockWidget, QMenuBar, \
     QAction, QMessageBox
 
 from src.camera import Camera
@@ -11,10 +11,11 @@ from src.camera import Camera
 
 # noinspection PyUnresolvedReferences
 class GUIMode(QMainWindow):
-    def __init__(self, camera_params, detection, visualizer):
+    def __init__(self, camera_params, detection, visualizer, logger):
         super().__init__()
         self.camera_params = camera_params
         self.camera = Camera(camera_params)
+        self.logger = logger
         self.detection = detection
         self.visualizer = visualizer
         self.selected_shape = None
@@ -22,6 +23,7 @@ class GUIMode(QMainWindow):
         self.set_video_window_size(self.camera_params['window_size'])
         self.setWindowTitle("GUI Mode")
         self.init_ui()
+
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)
@@ -113,7 +115,6 @@ class GUIMode(QMainWindow):
         )
         QMessageBox.information(self, "Shape Detection Info", info_text)
 
-
     def set_video_window_size(self, window_size):
         width, height = map(int, window_size)
         self.video_label.setFixedSize(width, height)
@@ -121,7 +122,6 @@ class GUIMode(QMainWindow):
     def init_ui(self):
         layout = QVBoxLayout()
         layout.addWidget(self.video_label)
-
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
@@ -133,7 +133,7 @@ class GUIMode(QMainWindow):
 
     def set_shape_filter(self, shape):
         self.selected_shape = shape
-        self.visualizer.set_shape_filter(shape)
+        self.logger.set_shape_filter(shape)
 
     def update_frame(self):
         frame = self.camera.read_frame()

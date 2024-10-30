@@ -18,8 +18,8 @@ class AppRunner:
         self.mode = mode
         self.shape_params = self.config_manager.load_shape_params(self.mode)
         self.color_ranges = self.config_manager.load_color_ranges(self.mode)
-        self.logger = DataLogger(self.config_manager.config)
-        self.visualizer = Visualizer(self.mode, self.config_manager.config, self.logger)
+        self.logger = DataLogger(self.config_manager.config, self.mode)
+        self.visualizer = Visualizer(self.logger)
         self.camera = None
         self.detection = ShapeAndColorDetection(self.shape_params, self.color_ranges)
 
@@ -61,6 +61,6 @@ class AppRunner:
 
     def run_gui_mode(self):
         app = QApplication(sys.argv)
-        window = GUIMode(self.config_manager.load_camera_params(), self.detection, self.visualizer)
+        window = GUIMode(self.config_manager.load_camera_params(), self.detection, self.visualizer, self.logger)
         window.show()
         sys.exit(app.exec_())
