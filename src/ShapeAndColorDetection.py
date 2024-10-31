@@ -15,6 +15,13 @@ class ShapeAndColorDetection:
         return self.get_shape(approx, contour, peri)
 
     def get_shape(self, approx, contour, peri):
+        """
+
+        :param approx:
+        :param contour:
+        :param peri:
+        :return: the 
+        """
         vertices = len(approx)
 
         if vertices == 3:
