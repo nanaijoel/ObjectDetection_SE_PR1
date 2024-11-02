@@ -40,10 +40,14 @@ The repository relies solely on the Python programming language.
 
 3. Run the application:
 - Navigate to the project folder and run: python main.py --mode <mode_name>
+
   Available modes: 
-  IMAGE: Detects shapes and colors in images from the input directory. 
-  CAMERA: Detects shapes and colors using the webcam.
-  GUI: Different buttons for shapes. That way the logger and visualization will only react to the selected shape.
+
+  - IMAGE: Detects shapes and colors in images from the input directory. 
+
+  - CAMERA: Detects shapes and colors using the webcam.
+
+  - GUI: Different buttons for shapes. That way the logger and visualization will only react to the selected shape.
 
 For example, to run the application in camera mode, type in terminal:
 
