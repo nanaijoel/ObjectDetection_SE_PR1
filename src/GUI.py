@@ -99,10 +99,6 @@ class GUIMode(QMainWindow):
         return btn
 
     def create_reset_button(self):
-        """
-        creates a reset button
-        :return: reset button
-        """
         reset_btn = QPushButton("All shapes")
         reset_btn.setStyleSheet("""
             QPushButton {
