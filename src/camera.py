@@ -10,7 +10,8 @@ class Camera:
 
     def initialize_camera(self):
         """
-        Initializes the camera with the specified index, FPS, and resolution.
+        Initializes the camera with the specified index, FPS, and window size.
+        FPS and window size are checked automatically.
         :return: cv2.VideoCapture object for the camera.
         """
         self.cap = cv2.VideoCapture(self.camera_params['camera_index'])
@@ -21,7 +22,8 @@ class Camera:
 
     def read_frame(self):
         """
-        :return: frame rate if available, else None.
+        Reads the next frame from the camera.
+        :return: new frame if available, else None.
         """
         if self.cap is not None:
             ret, frame = self.cap.read()
@@ -36,7 +38,7 @@ class Camera:
 
     def get_info(self):
         """
-        Get information about the camera such as resolution, FPS, and camera index.
+        Get information about the camera such as window size, FPS, and camera index.
         :return: Dictionary with camera info or message if camera is not initialized.
         """
         if self.cap is not None and self.cap.isOpened():

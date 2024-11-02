@@ -1,4 +1,5 @@
-# AppRunner class, handles startup argument. Either camera or image mode.
+# AppRunner class, handles startup argument. Either camera, image or GUI mode.
+
 
 import cv2
 import os

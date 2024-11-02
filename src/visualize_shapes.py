@@ -20,6 +20,12 @@ class Visualizer:
 
 
     def visualize_shapes(self, frame, shapes):
+        """
+        visualize the given shapes
+        :param frame: frame to be visualized
+        :param shapes: given shapes
+        :return: frame
+        """
         for contour, shape, color_name in shapes:
             contour_color = self.color_map['brown']
             fill_color = self.color_map.get(color_name, self.color_map['white'])

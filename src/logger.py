@@ -28,7 +28,10 @@ class DataLogger:
 
 
     def log_shapes(self, shapes):
-
+        """
+        Writes shape parameters to logfile with actual timestamp
+        :param string describing the shape
+        """
         current_time = datetime.datetime.now()
         if self.last_logged_time is None:
             self.last_logged_time = current_time

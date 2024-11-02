@@ -16,7 +16,8 @@ class ShapeAndColorDetection:
 
     def get_shape(self, approx, contour, peri):
         """
-        :return: the Form
+        finds a given form in a contour
+        :return: the Form (Triangle, Pentagon, Hexagon, Rectangle, Square)
         """
         vertices = len(approx)
 
@@ -47,6 +48,12 @@ class ShapeAndColorDetection:
         return "undefined"
 
     def detect_color(self, hsv, contour):
+        """
+        detects the color of a given contour
+        :param hsv: color settings
+        :param contour: given contour
+        :return: color of the given contour or "undefined"
+        """
         mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
         cv2.drawContours(mask, [contour], -1, (255, 255, 255), -1)
         mean_hsv = cv2.mean(hsv, mask=mask)[:3]
@@ -59,6 +66,12 @@ class ShapeAndColorDetection:
         return "undefined"
 
     def process_frame(self, frame, target_shape=None):
+        """
+        processes the given frames
+        :param frame: given frame
+        :param target_shape:
+        :return: shapes, if any detected
+        """
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (self.shape_params['kernel_x'], self.shape_params['kernel_y']), 0)

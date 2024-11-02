@@ -12,6 +12,7 @@ class ConfigManager:
 
     def load_shape_params(self, mode):
         """
+        loads the matching shape (config) files according to the mode
         :param mode: CAMERA, IMAGE or GUI
         :return: config shape parameters
         """
@@ -31,6 +32,10 @@ class ConfigManager:
         }
 
     def load_camera_params(self):
+        """
+        loads the matching camera (config) files
+        :return: Dictionary with camera info (index, window size, fps)
+        """
         return {
             'camera_index': int(self.config['CAMERA']['camera_index']),
             'window_size': self.config['CAMERA']['window_size'].split('x'),
@@ -39,6 +44,7 @@ class ConfigManager:
 
     def load_color_ranges(self, mode):
         """
+        loads the matching color (config) settings
         :param mode: IMAGE, CAMERA or GUI
         :return: config colour settings
         """

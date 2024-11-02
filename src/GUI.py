@@ -45,6 +45,10 @@ class GUIMode(QMainWindow):
         self.setMenuBar(menu_bar)
 
     def create_dock_widget(self):
+        """
+        creates a dokument widget
+        :return: dokument widget
+        """
         button_layout = QVBoxLayout()
 
         for btn in self.create_shape_buttons():
@@ -70,6 +74,12 @@ class GUIMode(QMainWindow):
         return [self.create_shape_button(name, shape) for name, shape in shapes]
 
     def create_shape_button(self, name, shape):
+        """
+        creates a button with given shape and name
+        :param name: name of the button
+        :param shape: given shape (Triangle, Rectangle, Pentagon, Hexagon, Circle)
+        :return: button
+        """
         btn = QPushButton(name)
         btn.setStyleSheet("""
             QPushButton {
@@ -89,6 +99,10 @@ class GUIMode(QMainWindow):
         return btn
 
     def create_reset_button(self):
+        """
+        creates a reset button
+        :return: reset button
+        """
         reset_btn = QPushButton("All shapes")
         reset_btn.setStyleSheet("""
             QPushButton {
