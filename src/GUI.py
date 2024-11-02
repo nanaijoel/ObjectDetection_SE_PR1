@@ -146,7 +146,6 @@ class GUIMode(QMainWindow):
 
     def set_shape_filter(self, shape):
         self.selected_shape = shape
-        # self.logger.set_shape_filter(shape)
 
     def update_frame(self):
         frame = self.camera.read_frame()
