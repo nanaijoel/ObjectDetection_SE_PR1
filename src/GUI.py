@@ -46,8 +46,8 @@ class GUIMode(QMainWindow):
 
     def create_dock_widget(self):
         """
-        creates a dokument widget
-        :return: dokument widget
+        Creates a dockable widget for shape selection, but disabled the features of docking in the end.
+        :return: (not) dockable widget
         """
         button_layout = QVBoxLayout()
 

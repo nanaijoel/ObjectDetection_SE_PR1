@@ -29,7 +29,7 @@ class DataLogger:
 
     def log_shapes(self, shapes):
         """
-        Writes shape parameters to logfile with actual timestamp
+        Writes shape parameters to logfile with actual timestamp, reacting on the log_interval in config.ini
         :param string describing the shape
         """
         current_time = datetime.datetime.now()
