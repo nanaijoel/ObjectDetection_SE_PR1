@@ -6,7 +6,7 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 
 # Features
 
-- Detects shapes like triangles, circles, and rectangles.
+- Detects shapes like triangles, circles, and rectangles, pentagons and hexagons.
 - Recognizes objects in different colors (e.g., red, green, blue).
 - Supports image-based and live webcam detection modes.
 - In GUI mode, you can filter by a single shape type or view all shape types together.
@@ -21,7 +21,7 @@ Further, there is a mode to also analyze the shapes in images put in the image f
   git clone https://github.com/nanaijoel/ObjectDetection_SE_PR1.git
   ```
 
-- Alternatively you can download the project as a zip file from github and copy or move the project into your IDE
+- Alternatively you can download the project as a zip file from github and copy or move the project into your IDE.
 
 
 2. Install dependencies:
@@ -33,7 +33,7 @@ Further, there is a mode to also analyze the shapes in images put in the image f
   pip install -r requirements.txt
   ```
 
-- Otherwise, just check the version of the specific modules which we use
+- Otherwise, just check the version of the specific modules which we use.
 
 
 3. Run the application:
