@@ -4,10 +4,12 @@ Webcam application which identifies geometrical objects such as triangles, recta
 
 Further, there is a mode to also analyze the shapes in images put in the image folder.
 
+The repository relies solely on the Python programming language.
+
 # Features
 
 - Detects shapes like triangles, circles, and rectangles, pentagons and hexagons.
-- Recognizes objects in different colors (e.g., red, green, blue).
+- Recognizes objects in different colors (red, green, blue, yellow, violet).
 - Supports image-based and live webcam detection modes.
 - In GUI mode, you can filter by a single shape type or view all shape types together.
 
@@ -25,15 +27,15 @@ Further, there is a mode to also analyze the shapes in images put in the image f
 
 
 2. Install dependencies:
-- Use the provided requirements.txt file to set up the recommended virtual environment 
-  with the correct module versions.
+- Make sure you use a python version 3.xx, so libraries like csv, datetime, configparser, os and sys are included directly.
+- Use the provided requirements.txt file to set up the recommended virtual environment with the correct module versions.
 - Install the dependencies by running:
 
   ```
   pip install -r requirements.txt
   ```
 
-- Otherwise, just check the version of the specific modules which we use.
+- Otherwise, just check the version of the specific modules which we use and get them on your IDE.
 
 
 3. Run the application:
